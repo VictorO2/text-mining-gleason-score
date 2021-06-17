@@ -37,8 +37,8 @@ os.chdir("M:\\gleason score\\Gleasen_scores\\")
 print('reading the dataset...')
 #reading the datasets
 #loading the file to memory
-conn = psycopg2.connect(user="postgres", password="root",
-                                  host="127.0.0.1", port="5432", database="naseem")
+conn = psycopg2.connect(user="postgres", password="XXXXX",
+                                  host="000.0.0.0", port="0000", database="XXXX")
 cursor = conn.cursor()
 sql_cmd1 = "SELECT dummy_id, result_text FROM sampled_data_1000"
 cursor.execute(sql_cmd1)
@@ -102,14 +102,11 @@ eng_stopwords = set(stopwords.words("english"));
 #eng_stopwords = eng_stopwords.union(more_stop_words)    
 
 print('removing the stopwords from the corpus') 
-
-#remove all the stop words
 for row in dfA.index:
     text_revi = dfA.loc[row, 'result_text'].split()
     dfA.loc[row, 'result_text']  = ' '.join([word for word in text_revi if word not in eng_stopwords]) 
     
 print('picking up only words that are a to z, A to Z, numbers and a few signs then converting the words to lowercase...')
-#remove all the symbols that might be in the dataset
 pattern_to_find = "[^a-zA-Z0-9\-\+\,\;\.\/' ]";
 pattern_to_repl = "";
 for row in dfA.index:
@@ -543,8 +540,9 @@ fig.savefig("risks_levels.png", dpi=900)
 fig.savefig("risks_levels.pdf", dpi=900)
 plt.show()
 
-conn = psycopg2.connect(user="postgres", password="root",
-                                  host="127.0.0.1", port="5432", database="naseem")
+print('reconnecting to the database')
+conn = psycopg2.connect(user="postgres", password="XXXXX",
+                                  host="000.0.0.0", port="0000", database="XXXX")
 
 print('deleting table from database if exist')
 with conn:
@@ -554,7 +552,7 @@ with conn:
 
 
 print('exporting the dataframe to postgres table...')
-engine = create_engine('postgresql://postgres:root@localhost:5432/naseem')
+engine = create_engine('postgresql://postgres:XXXXX@000.0.0.0:0000/XXXX')
 dfA.to_sql('mined_gleason_scores', engine, chunksize=100, index=False)
 print('data loaded to postgres successfully...') 
 
